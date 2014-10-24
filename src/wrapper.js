@@ -9,5 +9,5 @@
 })(this, function(Backbone, _) {
 
   // @include ./metal.js
-
+  return Metal;
 });

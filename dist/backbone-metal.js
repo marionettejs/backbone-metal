@@ -219,7 +219,7 @@ var _slice = Array.prototype.slice;
   
   Class.mixin(Utils);
   
-
+  return Metal;
 });
 
 //# sourceMappingURL=backbone-metal.js.map
