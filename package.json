@@ -1,0 +1,32 @@
+{
+  "name": "backbone-metal",
+  "version": "0.0.0",
+  "description": "Classes, Mixins, and Utils for Backbone Apps",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thejameskyle/backbone.metal.git"
+  },
+  "author": "James Kyle <me@thejameskyle.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thejameskyle/backbone.metal/issues"
+  },
+  "homepage": "https://github.com/thejameskyle/backbone.metal",
+  "devDependencies": {
+    "gulp": "^3.8.9",
+    "gulp-6to5": "^1.0.1",
+    "gulp-dox": "0.0.1",
+    "gulp-eslint": "^0.1.8",
+    "gulp-filter": "^1.0.2",
+    "gulp-jshint": "^1.8.5",
+    "gulp-preprocess": "^1.1.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.2.4",
+    "gulp-uglify": "^1.0.1",
+    "jshint-stylish": "^1.0.0"
+  }
+}
