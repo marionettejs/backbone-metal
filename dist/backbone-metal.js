@@ -1,4 +1,3 @@
-"use strict";
 var _slice = Array.prototype.slice;
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {

@@ -14,7 +14,7 @@ gulp.task('build', function() {
     .pipe(preprocess())
     .pipe(rename(package.name + '.js'))
     .pipe(sourcemaps.init())
-      .pipe(to5())
+      .pipe(to5({ blacklist: ['useStrict'] }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist'))
       .pipe(filter(['*', '!**/*.js.map']))

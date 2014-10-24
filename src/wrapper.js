@@ -7,6 +7,7 @@
     factory(root.Backbone, root._);
   }
 })(this, function(Backbone, _) {
+  'use strict';
 
   // @include ./metal.js
   return Metal;
