@@ -2,7 +2,7 @@
   "name": "backbone-metal",
   "version": "0.1.0",
   "description": "Classes, Mixins, and Utils for Backbone Apps",
-  "main": "none",
+  "main": "./dist/backbone-metal.js",
   "scripts": {
     "build": "gulp build",
     "test": "gulp test"
