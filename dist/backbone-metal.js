@@ -76,6 +76,17 @@
   /**
    * Creates a new Class.
    *
+   * ```js
+   * var MyClass = Class.extend({
+   *   initialize() {
+   *     console.log('Created!');
+   *   }
+   * });
+   *
+   * new MyClass();
+   * // >> Created!
+   * ```
+   *
    * @public
    * @class Class
    * @memberOf Metal
@@ -99,6 +110,18 @@
   
     /**
      * Creates a new subclass.
+     *
+     * ```js
+     * var MyClass = Class.extend({
+     *   // ...
+     * });
+     *
+     * var myClass = new MyClass();
+     * myClass instanceof MyClass
+     * // true
+     * myClass instanceof Class
+     * // true
+     * ```
      *
      * @public
      * @static
@@ -146,6 +169,25 @@
     /**
      * Mixes properties onto the class's prototype.
      *
+     * ```js
+     * var MyMixin = new Mixin({
+     *   alert() {
+     *     console.log('Alert!');
+     *   }
+     * });
+     *
+     * var MyClass = Class.extend({
+     *   initialize() {
+     *     this.alert();
+     *   }
+     * });
+     *
+     * MyClass.mixin(MyMixin);
+     *
+     * new MyClass();
+     * // >> Alert!
+     * ```
+     *
      * @public
      * @static
      * @method mixin
@@ -160,6 +202,36 @@
   
     /**
      * Mixes properties onto the class's constructor.
+     *
+     * ```js
+     * var MyMixin = new Mixin({
+     *   alert() {
+     *     console.log('Alert!');
+     *   }
+     * });
+     *
+     * var MyClass = Class.extend(...);
+     *
+     * MyClass.include(MyMixin);
+     *
+     * MyClass.alert();
+     * // >> Alert!
+     * ```
+     *
+     * You can also simply pass a plain javascript object.
+     *
+     * ```js
+     * var MyClass = Class.extend(...);
+     *
+     * MyClass.include({
+     *   alert() {
+     *     console.log('Alert!');
+     *   }
+     * });
+     *
+     * MyClass.alert();
+     * // >> Alert!
+     * ```
      *
      * @public
      * @static
@@ -198,7 +270,13 @@
   
   /**
    * A subclass of the JavaScript Error object for use in Backbone. Can also add
-   * a url based on
+   * a url based on the urlRoot.
+   *
+   * ```js
+   * throw new Metal.Error('Oh you\'ve really done it now...');
+   * // Uncaught Metal.Error: Oh you've really done it now...
+   * //   [stack trace]
+   * ```
    *
    * @class Error
    * @memberOf Metal
@@ -425,6 +503,26 @@
      * `this.triggerMethod("foo:bar")` will trigger the "foo:bar" event and
      * call the "onFooBar" method.
      *
+     * ```js
+     * var MyClass = Class.extend({
+     *   initialize() {
+     *     this.on('class:created', function() {
+     *       console.log('Trigger Called!');
+     *     });
+     *
+     *     this.triggerMethod('class:created');
+     *   },
+     *
+     *   onClassCreated() {
+     *     console.log('Method Called!');
+     *   }
+     * });
+     *
+     * new MyClass();
+     * // >> Method Called!
+     * // >> Trigger Called!
+     * ```
+     *
      * @public
      * @method triggerMethod
      * @param {String} event - The name of the event.
@@ -457,6 +555,27 @@
      * Retrieve an object, function or other value from a target
      * object or its `options`, with `options` taking precedence.
      *
+     * ```js
+     * var Person = Class.extend({
+     *   name: 'James Kyle',
+     *
+     *   intialize(options) {
+     *     this.options = options;
+     *     this.greet();
+     *   },
+     *
+     *   greet() {
+     *     var name = this.getOption('name');
+     *     console.log(`Hello, my name is ${name}.`);
+     *   }
+     * });
+     *
+     * new Person();
+     * // >> Hello, my name is James Kyle.
+     * new Person({ name: 'Sam Saccone' });
+     * // >> Hello, my name is Sam Saccone.
+     * ```
+     *
      * @public
      * @method getOption
      * @param {String} name - The name of the option to get.
@@ -482,6 +601,16 @@
     /**
      * Checks if `value` is a Metal Class.
      *
+     * ```js
+     * _.isClass(Class.extend(...));
+     * // >> true
+     * _.isClass(function() {...});
+     * // >> false
+     * _.isClass({...});
+     * // >> false
+     * _.isClass(new Class());
+     * // >> false
+     * ```
      * @public
      * @method isClass
      * @memberOf _
@@ -493,6 +622,17 @@
   
     /**
      * Checks if `value` is a Metal Mixin.
+     *
+     * ```js
+     * _.isMixin(new Mixin());
+     * // >> true
+     * _.isMixin({});
+     * // >> false
+     * _.isMixin(function() {...});
+     * // >> false
+     * _.isMixin(new Class());
+     * // >> false
+     * ```
      *
      * @public
      * @method isMixin
