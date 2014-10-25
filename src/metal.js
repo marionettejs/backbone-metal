@@ -335,8 +335,8 @@ var Err = Metal.Error = Backbone.Error = Class.extend.call(Error, {
    * @returns {String} - Formatted error message.
    */
   toString() {
-    return this.name + ': ' + this.message + (
-      this.url ? ' See: ' + this.url : ''
+    return `${this.name}: ${this.message}` + (
+      this.url ? ` See: ${this.url}` : ''
     );
   }
 });
@@ -375,7 +375,7 @@ var deprecate = Metal.deprecate = Backbone.deprecate = function(message, test) {
 
   // If deprecation message has not already been warned, send the warning.
   if (!deprecate._cache[message]) {
-    deprecate._warn('Deprecation warning: ' + message);
+    deprecate._warn(`Deprecation warning: ${message}`);
     deprecate._cache[message] = true;
   }
 };
@@ -393,9 +393,9 @@ var deprecate = Metal.deprecate = Backbone.deprecate = function(message, test) {
  */
 deprecate._format = function(prev, next, url) {
   return (
-    prev + ' is going to be removed in the future. ' +
-    'Please use ' + next + ' instead.' +
-    (url ? ' See: ' + url : '')
+    `${prev} is going to be removed in the future. ` +
+    `Please use ${next} instead.` +
+    (url ? ` See: ${url}` : '')
   );
 };
 
@@ -459,7 +459,7 @@ var triggerSplitter = /(^|:)(\w)/gi;
  * @private
  * @method getEventName
  * @param {String} match - The matched substring.
- * @param {Number} offset - The offset of the matched substring within the total string being examined.
+ * @param {Number} offset - The offset of the matched substring.
  * @param {String} eventName - The event name.
  * @return {String} - The uppercase event name.
  */
@@ -599,7 +599,7 @@ _.mixin({
    * @memberOf _
    * @param {*} value - The value to check.
    */
-  isClass: function(value) {
+  isClass(value) {
     return !!value && value.prototype instanceof Class;
   },
 
@@ -622,7 +622,7 @@ _.mixin({
    * @memberOf _
    * @param {*} value - The value to check.
    */
-  isMixin: function(value) {
+  isMixin(value) {
     return !!value && value instanceof Mixin;
   }
 });

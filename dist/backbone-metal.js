@@ -351,8 +351,8 @@
      * @returns {String} - Formatted error message.
      */
     toString: function() {
-      return this.name + ': ' + this.message + (
-        this.url ? ' See: ' + this.url : ''
+      return "" + this.name + ": " + this.message + (
+        this.url ? " See: " + this.url : ''
       );
     }
   });
@@ -391,7 +391,7 @@
   
     // If deprecation message has not already been warned, send the warning.
     if (!deprecate._cache[message]) {
-      deprecate._warn('Deprecation warning: ' + message);
+      deprecate._warn("Deprecation warning: " + message);
       deprecate._cache[message] = true;
     }
   };
@@ -409,9 +409,9 @@
    */
   deprecate._format = function(prev, next, url) {
     return (
-      prev + ' is going to be removed in the future. ' +
-      'Please use ' + next + ' instead.' +
-      (url ? ' See: ' + url : '')
+      "" + prev + " is going to be removed in the future." +
+      ("Please use " + next + " instead.") +
+      (url ? " See: " + url : '')
     );
   };
   
