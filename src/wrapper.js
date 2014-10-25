@@ -8,6 +8,8 @@
   }
 })(this, function(Backbone, _) {
   'use strict';
+  
+  var _slice = Array.prototype.slice;
 
   // @include ./metal.js
   return Metal;

@@ -1,4 +1,3 @@
-var _slice = Array.prototype.slice;
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['backbone', 'underscore'], factory);
@@ -9,6 +8,8 @@ var _slice = Array.prototype.slice;
   }
 })(this, function(Backbone, _) {
   'use strict';
+  
+  var _slice = Array.prototype.slice;
 
   var Metal = {};
   
