@@ -7,6 +7,7 @@ var uglify = require('gulp-uglify');
 var filter = require('gulp-filter');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var mocha = require('gulp-mocha');
 var package = require('./package');
 
 gulp.task('build', function() {
@@ -25,11 +26,18 @@ gulp.task('build', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('test', function() {
+gulp.task('jshint', function() {
   return gulp.src(['src/**/*.js', '!src/wrapper.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
+
+gulp.task('mocha', function() {
+  return gulp.src('test/**.js', { read: false })
+    .pipe(mocha({ reporter: 'spec' }));
+});
+
+gulp.task('test', ['jshint', 'mocha']);
 
 gulp.task('watch', function() {
   gulp.watch('src/**.js', ['test']);

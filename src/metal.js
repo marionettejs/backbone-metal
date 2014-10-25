@@ -74,11 +74,11 @@ var Mixin = Metal.Mixin = Backbone.Mixin = function(protoProps) {
 
 _.mixin({
   isClass: function(value) {
-    return value && value.prototype instanceof Class;
+    return !!value && value.prototype instanceof Class;
   },
 
   isMixin: function(value) {
-    return value && value instanceof Mixin;
+    return !!value && value instanceof Mixin;
   }
 });
 
@@ -86,7 +86,7 @@ var errorProps = [
   'description', 'fileName', 'lineNumber', 'name', 'message', 'number'
 ];
 
-var Err = Metal.Error = Backbone.Error = Class.extend({
+var Err = Metal.Error = Backbone.Error = Class.extend.call(Error, {
   urlRoot: 'http://github.com/thejameskyle/backbone-metal',
 
   constructor(message, options = {}) {
@@ -118,8 +118,10 @@ var Err = Metal.Error = Backbone.Error = Class.extend({
   }
 });
 
+_.extend(Err, Class);
+
 var deprecate = Metal.deprecate = Backbone.deprecate = function(message, test) {
-  if (test === undefined || !test) {
+  if (test !== undefined && test) {
     return;
   }
 
@@ -187,12 +189,8 @@ var Utils = Metal.Utils = Backbone.Utils = new Mixin({
     return result;
   },
 
-  triggerMethodOn(context, ...args) {
-    return this.triggerMethod.apply(context, args);
-  },
-
   getOption(name) {
-    if (this.options && this.options[name]) {
+    if (this.options && this.options[name] !== undefined) {
       return this.options[name];
     } else {
       return this[name];
