@@ -4,7 +4,8 @@
   "description": "Classes, Mixins, and Utils for Backbone Apps",
   "main": "none",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
