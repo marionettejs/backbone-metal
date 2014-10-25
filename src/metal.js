@@ -42,11 +42,18 @@ var superTest = (/xyz/.test(function(){return 'xyz';})) ? /\b_super\b/ : /.*/;
  */
 function wrapAll(dest, source) {
   _.forEach(source, function(method, name) {
+    // If we didn't find the original value in the original object
     var superMethod = dest[name];
+
+    // Test if new method calls `_super`
     var hasSuper = superTest.test(method);
 
+    // Only wrap the new method if the original method was a function and the
+    // new method calls `_super`.
     if (hasSuper && _.isFunction(method) && _.isFunction(superMethod)) {
       dest[name] = wrap(method, superMethod);
+
+    // Otherwise just add the new method or property to the object.
     } else {
       dest[name] = method;
     }
@@ -90,22 +97,34 @@ _.extend(Class, {
     var Parent = this;
     var Child;
 
+    // The constructor function for the new subclass is either defined by you
+    // (the "constructor" property in your `extend` definition), or defaulted
+    // by us to simply call the parent's constructor.
     if (protoProps && _.has(protoProps, 'constructor')) {
       Child = wrap(protoProps.constructor, Parent.prototype.constructor);
     } else {
       Child = function() { Parent.apply(this, arguments); };
     }
 
+    // Add static properties to the constructor function, if supplied.
     _.extend(Child, Parent);
     wrapAll(Child, staticProps);
 
+    // Set the prototype chain to inherit from `parent`, without calling
+    // `parent`'s constructor function.
     var Surrogate = function() { this.constructor = Child; };
     Surrogate.prototype = Parent.prototype;
     Child.prototype = new Surrogate();
 
+    // Add prototype properties (instance properties) to the subclass,
+    // if supplied.
     wrapAll(Child.prototype, protoProps);
 
+    // Set a convenience property in case the parent class is needed later.
     Child.superclass = Parent;
+
+    // Set a convenience property in case the parent's prototype is needed
+    // later.
     Child.__super__ = Parent.prototype;
 
     return Child;
@@ -121,6 +140,7 @@ _.extend(Class, {
    * @return {Class} - The class.
    */
   mixin(protoProps) {
+    // Add prototype properties (instance properties) to the class, if supplied.
     wrapAll(this.prototype, protoProps);
     return this;
   },
@@ -135,6 +155,7 @@ _.extend(Class, {
    * @return {Class} - The class.
    */
   include(staticProps) {
+    // Add static properties to the constructor function, if supplied.
     wrapAll(this, staticProps);
     return this;
   }
@@ -150,6 +171,7 @@ _.extend(Class, {
  * @param {Object} protoProps - The properties to be added to the prototype.
  */
 var Mixin = Metal.Mixin = Backbone.Mixin = function(protoProps) {
+  // Add prototype properties (instance properties) to the class, if supplied.
   _.extend(this, protoProps);
 };
 
@@ -186,16 +208,29 @@ var Err = Metal.Error = Backbone.Error = Class.extend.call(Error, {
    * @param {String} [options.url] - The url to visit for more help.
    */
   constructor(message, options = {}) {
+    // If options are provided in place of a message, assume message exists on
+    // options.
     if (_.isObject(message)) {
       options = message;
       message = options.message;
     }
 
+    // Create a fake error with message in order to capture a stack trace.
     var error = Error.call(this, message);
+
+    // Copy over all the error-related properties.
     _.extend(this, _.pick(error, errorProps), _.pick(options, errorProps));
 
+    // Adds a `stack` property to the given error object that will yield the
+    // stack trace at the time captureStackTrace was called.
+    // When collecting the stack trace all frames above the topmost call
+    // to this function, including that call, will be left out of the
+    // stack trace.
+    // This is useful because we can hide Metal implementation details
+    // that are not very helpful for the user.
     this.captureStackTrace();
 
+    // Add url property to error, if provided.
     if (options.url) {
       this.url = this.urlRoot + options.url;
     }
@@ -208,6 +243,7 @@ var Err = Metal.Error = Backbone.Error = Class.extend.call(Error, {
    * @method captureStackTrace
    */
   captureStackTrace() {
+    // Error.captureStackTrace does not exist in all browsers.
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, Err);
     }
@@ -245,16 +281,21 @@ _.extend(Err, Class);
  * @param {Boolean} [test] - An optional boolean. If falsy, the deprecation will be displayed.
  */
 var deprecate = Metal.deprecate = Backbone.deprecate = function(message, test) {
+
+  // Returns if test is provided and is falsy.
   if (test !== undefined && test) {
     return;
   }
 
+  // If message is provided as an object, format the object into a string.
   if (_.isObject(message)) {
     message = deprecate._format(message.prev, message.next, message.url);
   }
 
+  // Ensure that message is a string
   message = message && message.toString();
 
+  // If deprecation message has not already been warned, send the warning.
   if (!deprecate._cache[message]) {
     deprecate._warn('Deprecation warning: ' + message);
     deprecate._cache[message] = true;
@@ -293,6 +334,7 @@ if (typeof console !== 'undefined') {
   deprecate._warn = console.warn || console.log;
 }
 
+// If `console.warn` and `console.log` weren't found, just noop.
 if (!deprecate._warn) {
   deprecate._warn = _.noop;
 }
@@ -317,7 +359,6 @@ deprecate._cache = {};
  * @mixes Backbone.Events
  */
 var Events = Metal.Events = Backbone.Events = new Mixin(Backbone.Events);
-
 
 /**
  * @class Class
@@ -360,6 +401,14 @@ function getEventName(match, offset, eventName) {
 var Utils = Metal.Utils = Backbone.Utils = new Mixin({
 
   /**
+   * Trigger an event and/or a corresponding method name.
+   *
+   * `this.triggerMethod("foo")` will trigger the "foo" event and
+   * call the "onFoo" method.
+   *
+   * `this.triggerMethod("foo:bar")` will trigger the "foo:bar" event and
+   * call the "onFooBar" method.
+   *
    * @public
    * @method triggerMethod
    * @param {String} event - The name of the event.
@@ -367,14 +416,19 @@ var Utils = Metal.Utils = Backbone.Utils = new Mixin({
    * @return {*} - The result of the method.
    */
   triggerMethod(event, ...args) {
+
+    // Get the method name from the event name
     var methodName = 'on' + event.replace(triggerSplitter, getEventName);
     var method = this[methodName];
     var result;
 
+    // call the onMethodName if it exists
     if (_.isFunction(method)) {
+      // pass all arguments, except the event name
       result = method.apply(this, args);
     }
 
+    // trigger the event, if a trigger method exists
     if (_.isFunction(this.trigger)) {
       this.trigger.apply(this, arguments);
     }
@@ -383,6 +437,9 @@ var Utils = Metal.Utils = Backbone.Utils = new Mixin({
   },
 
   /**
+   * Retrieve an object, function or other value from a target
+   * object or its `options`, with `options` taking precedence.
+   *
    * @public
    * @method getOption
    * @param {String} name - The name of the option to get.
@@ -406,7 +463,7 @@ Class.mixin(Utils);
 _.mixin({
 
   /**
-   * Checks if `value` is a class.
+   * Checks if `value` is a Metal Class.
    *
    * @public
    * @method isClass
@@ -418,7 +475,7 @@ _.mixin({
   },
 
   /**
-   * Checks if `value` is a mixin.
+   * Checks if `value` is a Metal Mixin.
    *
    * @public
    * @method isMixin
