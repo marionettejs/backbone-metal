@@ -1,7 +1,7 @@
 describe('Underscore mixins', function() {
   describe('#isClass', function() {
     beforeEach(function() {
-      this.MyClass = Backbone.Class.extend().extend();
+      this.MyClass = Metal.Class.extend().extend();
       this.MyCtor = function() {};
     });
 
@@ -25,7 +25,7 @@ describe('Underscore mixins', function() {
 
   describe('#isMixin', function() {
     beforeEach(function() {
-      this.MyMixin = new Backbone.Mixin();
+      this.MyMixin = new Metal.Mixin();
       this.MyObject = {};
     });
 

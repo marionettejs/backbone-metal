@@ -1,8 +1,8 @@
 describe('Class', function() {
   describe('#constructor', function() {
     beforeEach(function() {
-      stub(Backbone.Class.prototype, 'initialize');
-      this.instance = new Backbone.Class('arg1', 'arg2');
+      stub(Metal.Class.prototype, 'initialize');
+      this.instance = new Metal.Class('arg1', 'arg2');
     });
 
     it('should call initialize with the correct arguments', function() {
@@ -13,13 +13,13 @@ describe('Class', function() {
 
   describe('mixins', function() {
     it('should contain Events on the prototype', function() {
-      expect(Backbone.Class.prototype)
-        .to.contain(Backbone.Events);
+      expect(Metal.Class.prototype)
+        .to.contain(Metal.Events);
     });
 
     it('should contain Utils on the prototype', function() {
-      expect(Backbone.Class.prototype)
-        .to.contain(Backbone.Utils);
+      expect(Metal.Class.prototype)
+        .to.contain(Metal.Utils);
     });
   });
 
@@ -27,7 +27,7 @@ describe('Class', function() {
     beforeEach(function() {
       this.method1 = stub();
       this.method2 = stub();
-      this.Subclass = Backbone.Class.extend({
+      this.Subclass = Metal.Class.extend({
         property1: 'value1',
         method1: this.method1
       }, {
@@ -39,29 +39,29 @@ describe('Class', function() {
 
     it('should return a Child class', function() {
       expect(this.Subclass)
-        .not.to.equal(Backbone.Class);
+        .not.to.equal(Metal.Class);
       expect(this.instance)
-        .to.be.instanceof(Backbone.Class);
+        .to.be.instanceof(Metal.Class);
     });
 
     it('should copy over the parent class\'s prototype', function() {
       expect(this.Subclass.prototype)
-        .to.deep.contain(Backbone.Class.prototype);
+        .to.deep.contain(Metal.Class.prototype);
     });
 
     it('should copy over the parent class\'s statics', function() {
       expect(_.clone(this.Subclass))
-        .to.contain(_.clone(Backbone.Class));
+        .to.contain(_.clone(Metal.Class));
     });
 
     it('should set __super__ to the parent class\'s prototype', function() {
       expect(this.Subclass)
-        .to.have.property('__super__', Backbone.Class.prototype);
+        .to.have.property('__super__', Metal.Class.prototype);
     });
 
     it('should set superclass to the parent class', function() {
       expect(this.Subclass)
-        .to.have.property('superclass', Backbone.Class);
+        .to.have.property('superclass', Metal.Class);
     });
 
     it('should add instance properties to the subclass', function() {
@@ -91,15 +91,15 @@ describe('Class', function() {
     describe('_super', function() {
       describe('when in the constructor', function() {
         beforeEach(function() {
-          stub(Backbone.Class.prototype, 'constructor');
-          this.Subclass = Backbone.Class.extend({
+          stub(Metal.Class.prototype, 'constructor');
+          this.Subclass = Metal.Class.extend({
             constructor: function() { this._super('arg'); }
           });
           this.instance = new this.Subclass();
         });
 
         it('should call the parent class\'s constructor', function() {
-          expect(Backbone.Class.prototype.constructor)
+          expect(Metal.Class.prototype.constructor)
             .to.have.been.calledOn(this.instance)
             .and.calledWith('arg');
         });
@@ -107,8 +107,8 @@ describe('Class', function() {
 
       describe('when not in the constructor', function() {
         beforeEach(function() {
-          stub(Backbone.Class.prototype, 'on');
-          this.Subclass = Backbone.Class.extend({
+          stub(Metal.Class.prototype, 'on');
+          this.Subclass = Metal.Class.extend({
             on: function() { this._super('arg'); }
           });
           this.instance = new this.Subclass();
@@ -116,7 +116,7 @@ describe('Class', function() {
         });
 
         it('should call the parent class\'s matching function', function() {
-          expect(Backbone.Class.prototype.on)
+          expect(Metal.Class.prototype.on)
             .to.have.been.calledOn(this.instance)
             .and.calledWith('arg');
         });
@@ -126,7 +126,7 @@ describe('Class', function() {
 
   describe('#include', function() {
     beforeEach(function() {
-      this.Subclass = Backbone.Class.extend();
+      this.Subclass = Metal.Class.extend();
       this.Subclass.include({
         prop1: 'value1',
         prop2: 'value2'
@@ -160,7 +160,7 @@ describe('Class', function() {
 
   describe('#mixin', function() {
     beforeEach(function() {
-      this.Subclass = Backbone.Class.extend();
+      this.Subclass = Metal.Class.extend();
       this.Subclass.mixin({
         prop1: 'value1',
         prop2: 'value2'

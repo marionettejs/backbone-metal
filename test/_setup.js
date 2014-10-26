@@ -4,6 +4,8 @@ global._ = require('underscore');
 require('6to5/register');
 require('../src/metal');
 
+global.Metal = Backbone.Metal;
+
 var chai = require('chai');
 var sinon = require('sinon');
 chai.use(require('sinon-chai'));

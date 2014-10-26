@@ -1,12 +1,12 @@
 describe('Mixin', function() {
   describe('#constructor', function() {
     beforeEach(function() {
-      this.mixin = new Backbone.Mixin({ foo: 'foo', bar: 'bar' });
+      this.mixin = new Metal.Mixin({ foo: 'foo', bar: 'bar' });
     });
 
     it('should be an instance of Mixin', function() {
       expect(this.mixin)
-        .to.be.instanceOf(Backbone.Mixin)
+        .to.be.instanceOf(Metal.Mixin)
     });
 
     it('should add the properties to the mixin', function() {

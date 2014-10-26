@@ -1,16 +1,16 @@
 describe('deprecate', function() {
   beforeEach(function() {
-    this.sinon.stub(Backbone.deprecate, '_warn');
-    Backbone.deprecate._cache = {};
+    this.sinon.stub(Metal.deprecate, '_warn');
+    Metal.deprecate._cache = {};
   });
 
   describe('when calling with a message', function() {
     beforeEach(function() {
-      Backbone.deprecate('foo');
+      Metal.deprecate('foo');
     });
 
     it('should `console.warn` the message', function() {
-      expect(Backbone.deprecate._warn)
+      expect(Metal.deprecate._warn)
         .to.have.been.calledOnce
         .and.calledWith('Deprecation warning: foo');
     });
@@ -18,14 +18,14 @@ describe('deprecate', function() {
 
   describe('when calling with an object', function() {
     beforeEach(function() {
-      Backbone.deprecate({
+      Metal.deprecate({
         prev: 'foo',
         next: 'bar'
       });
     });
 
     it('should `console.warn` the message', function() {
-      expect(Backbone.deprecate._warn)
+      expect(Metal.deprecate._warn)
         .to.have.been.calledOnce
         .and.calledWith('Deprecation warning: foo is going to be removed in the future. Please use bar instead.');
     });
@@ -33,7 +33,7 @@ describe('deprecate', function() {
 
   describe('when calling with an object with a url', function() {
     beforeEach(function() {
-      Backbone.deprecate({
+      Metal.deprecate({
         prev: 'foo',
         next: 'bar',
         url: 'baz'
@@ -41,7 +41,7 @@ describe('deprecate', function() {
     });
 
     it('should `console.warn` the message', function() {
-      expect(Backbone.deprecate._warn)
+      expect(Metal.deprecate._warn)
         .to.have.been.calledOnce
         .and.calledWith('Deprecation warning: foo is going to be removed in the future. Please use bar instead. See: baz');
     });
@@ -49,11 +49,11 @@ describe('deprecate', function() {
 
   describe('when calling with a message and a falsy test', function() {
     beforeEach(function() {
-      Backbone.deprecate('bar', false);
+      Metal.deprecate('bar', false);
     });
 
     it('should `console.warn` the message', function() {
-      expect(Backbone.deprecate._warn)
+      expect(Metal.deprecate._warn)
         .to.have.been.calledOnce
         .and.calledWith('Deprecation warning: bar');
     });
@@ -61,22 +61,22 @@ describe('deprecate', function() {
 
   describe('when calling with a message and a truthy test', function() {
     beforeEach(function() {
-      Backbone.deprecate('Foo', true);
+      Metal.deprecate('Foo', true);
     });
 
     it('should not `console.warn` the message', function() {
-      expect(Backbone.deprecate._warn).not.to.have.been.called;
+      expect(Metal.deprecate._warn).not.to.have.been.called;
     });
   });
 
   describe('when calling with the same message twice', function() {
     beforeEach(function() {
-      Backbone.deprecate('baz');
-      Backbone.deprecate('baz');
+      Metal.deprecate('baz');
+      Metal.deprecate('baz');
     });
 
     it('should `console.warn` the message', function() {
-      expect(Backbone.deprecate._warn)
+      expect(Metal.deprecate._warn)
         .to.have.been.calledOnce
         .and.calledWith('Deprecation warning: baz');
     });

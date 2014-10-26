@@ -4,15 +4,15 @@ describe('Utils', function() {
       this.target = {};
       this.methodHandler = stub();
       this.eventHandler = stub();
-      _.extend(this.target, Backbone.Events);
-      spy(Backbone.Utils, 'triggerMethod');
+      _.extend(this.target, Metal.Events);
+      spy(Metal.Utils, 'triggerMethod');
     });
 
     describe('when triggering an event', function() {
       beforeEach(function() {
         this.target.onFoo = this.methodHandler;
         this.target.on('foo', this.eventHandler);
-        Backbone.Utils.triggerMethod.call(this.target, 'foo');
+        Metal.Utils.triggerMethod.call(this.target, 'foo');
       });
 
       it('should trigger the event', function() {
@@ -26,7 +26,7 @@ describe('Utils', function() {
       });
 
       it('returns the value returned by the on{Event} method', function() {
-        expect(Backbone.Utils.triggerMethod)
+        expect(Metal.Utils.triggerMethod)
           .to.have.been.calledOnce
           .and.returned(this.returnValue);
       });
@@ -44,7 +44,7 @@ describe('Utils', function() {
       beforeEach(function() {
         this.target.onFoo = this.methodHandler;
         this.target.on('foo', this.eventHandler);
-        Backbone.Utils.triggerMethod.call(this.target, 'foo', 'argOne', 'argTwo');
+        Metal.Utils.triggerMethod.call(this.target, 'foo', 'argOne', 'argTwo');
       });
 
       it('should trigger the event with the args', function() {
@@ -64,7 +64,7 @@ describe('Utils', function() {
       beforeEach(function() {
         this.target.onFooBar = this.methodHandler;
         this.target.on('foo:bar', this.eventHandler);
-        Backbone.Utils.triggerMethod.call(this.target, 'foo:bar', 'argOne', 'argTwo');
+        Metal.Utils.triggerMethod.call(this.target, 'foo:bar', 'argOne', 'argTwo');
       });
 
       it('should trigger the event with the args', function() {
@@ -83,7 +83,7 @@ describe('Utils', function() {
     describe('when triggering an event and no handler method exists', function() {
       beforeEach(function() {
         this.target.on('foo:bar', this.eventHandler);
-        Backbone.Utils.triggerMethod.call(this.target, 'foo:bar', 'argOne', 'argTwo');
+        Metal.Utils.triggerMethod.call(this.target, 'foo:bar', 'argOne', 'argTwo');
       });
 
       it('should trigger the event with the args', function() {
@@ -102,7 +102,7 @@ describe('Utils', function() {
       beforeEach(function() {
         this.target.onFooBar = 'baz';
         this.target.on('foo:bar', this.eventHandler);
-        Backbone.Utils.triggerMethod.call(this.target, 'foo:bar', 'argOne', 'argTwo');
+        Metal.Utils.triggerMethod.call(this.target, 'foo:bar', 'argOne', 'argTwo');
       });
 
       it('should trigger the event with the args', function() {
@@ -122,7 +122,7 @@ describe('Utils', function() {
     describe('when an object only has the option set on the definition', function() {
       beforeEach(function() {
         this.target = { foo: 'bar' };
-        this.value = Backbone.Utils.getOption.call(this.target, 'foo');
+        this.value = Metal.Utils.getOption.call(this.target, 'foo');
       });
 
       it('should return that definitions option', function() {
@@ -134,7 +134,7 @@ describe('Utils', function() {
     describe('when an object only has the option set on the options', function() {
       beforeEach(function() {
         this.target = { options: { foo: 'bar' } };
-        this.value = Backbone.Utils.getOption.call(this.target, 'foo');
+        this.value = Metal.Utils.getOption.call(this.target, 'foo');
       });
 
       it('should return value from the options', function() {
@@ -146,7 +146,7 @@ describe('Utils', function() {
     describe('when an object has the option set on the options, and it is a "falsey" value', function() {
       beforeEach(function() {
         this.target = { options: { foo: false } };
-        this.value = Backbone.Utils.getOption.call(this.target, 'foo');
+        this.value = Metal.Utils.getOption.call(this.target, 'foo');
       });
 
       it('should return value from the options', function() {
@@ -158,7 +158,7 @@ describe('Utils', function() {
     describe('when an object has the option set on the options, and it is a "undefined" value', function() {
       beforeEach(function() {
         this.target = { foo: 'bar', options: { foo: undefined } };
-        this.value = Backbone.Utils.getOption.call(this.target, 'foo');
+        this.value = Metal.Utils.getOption.call(this.target, 'foo');
       });
 
       it('should return the objects value', function() {
@@ -170,7 +170,7 @@ describe('Utils', function() {
     describe('when an object has the option set on both the defininition and options', function() {
       beforeEach(function() {
         this.target = { foo: 'bar', options: { foo: 'baz' } };
-        this.value = Backbone.Utils.getOption.call(this.target, 'foo');
+        this.value = Metal.Utils.getOption.call(this.target, 'foo');
       });
 
       it('should return that value from the options', function() {

@@ -1,12 +1,12 @@
 describe('Error', function() {
   it('should be subclass of native Error', function() {
-    expect(new Backbone.Error())
+    expect(new Metal.Error())
       .to.be.instanceOf(Error);
   });
 
   describe('when passed a message', function() {
     beforeEach(function() {
-      this.error = new Backbone.Error('Foo');
+      this.error = new Metal.Error('Foo');
     });
 
     it('should contain the correct properties', function() {
@@ -25,7 +25,7 @@ describe('Error', function() {
 
   describe('when passed a message and options', function() {
     beforeEach(function() {
-      this.error = new Backbone.Error('Foo', {
+      this.error = new Metal.Error('Foo', {
         name: 'Bar'
       });
     });
@@ -46,7 +46,7 @@ describe('Error', function() {
 
   describe('when passed a message and options with a url', function() {
     beforeEach(function() {
-      this.error = new Backbone.Error('Foo', {
+      this.error = new Metal.Error('Foo', {
         name: 'Bar',
         url: '#baz'
       });
@@ -69,7 +69,7 @@ describe('Error', function() {
 
   describe('when passed options', function() {
     beforeEach(function() {
-      this.error = new Backbone.Error({
+      this.error = new Metal.Error({
         name: 'Foo',
         message: 'Bar'
       });
@@ -91,7 +91,7 @@ describe('Error', function() {
 
   describe('when passed options with a url', function() {
     beforeEach(function() {
-      this.error = new Backbone.Error({
+      this.error = new Metal.Error({
         name: 'Foo',
         message: 'Bar',
         url: '#baz'
@@ -123,7 +123,7 @@ describe('Error', function() {
         message      : 'myMessage',
         number       : 'myNumber'
       };
-      this.error = new Backbone.Error(this.props);
+      this.error = new Metal.Error(this.props);
     });
 
     it('should contain all the valid error properties', function() {
@@ -139,7 +139,7 @@ describe('Error', function() {
         bar : 'myBar',
         baz : 'myBaz'
       };
-      this.error = new Backbone.Error(this.props);
+      this.error = new Metal.Error(this.props);
     });
 
     it('should not contain invalid properties', function() {
@@ -150,14 +150,14 @@ describe('Error', function() {
 
   describe('when extended', function() {
     beforeEach(function() {
-      this.TypeError = Backbone.Error.extend();
+      this.TypeError = Metal.Error.extend();
       this.typeError = new this.TypeError('Foo');
     });
 
     it('should subclass the error properly', function() {
       expect(this.typeError)
         .to.be.instanceOf(Error)
-        .to.be.instanceOf(Backbone.Error)
+        .to.be.instanceOf(Metal.Error)
         .to.be.instanceOf(this.TypeError);
     });
   });
