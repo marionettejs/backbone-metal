@@ -14,7 +14,7 @@
   /**
    * @module Metal
    */
-  var Metal = {};
+  var Metal = Backbone.Metal = {};
   
   /**
    * Wraps the passed method so that `this._super` will point to the superMethod
@@ -92,7 +92,7 @@
    * @memberOf Metal
    * @memberOf Backbone
    */
-  var Class = Metal.Class = Backbone.Class = function() {
+  var Class = Metal.Class = function() {
     this.initialize.apply(this, arguments);
   };
   
@@ -246,6 +246,13 @@
     }
   });
   
+  var classify = Metal.classify = function(Klass) {
+    return Metal.Class.extend(
+      _.extend({ constructor: Klass }, _.omit(Klass.prototype, _.keys(Backbone.Events))),
+      _.omit(Klass, _.keys(Class))
+    );
+  };
+  
   /**
    * Allows you to create mixins, whose properties can be added to other classes.
    *
@@ -255,7 +262,7 @@
    * @memberOf Backbone
    * @param {Object} protoProps - The properties to be added to the prototype.
    */
-  var Mixin = Metal.Mixin = Backbone.Mixin = function(protoProps) {
+  var Mixin = Metal.Mixin = function(protoProps) {
     // Add prototype properties (instance properties) to the class, if supplied.
     _.extend(this, protoProps);
   };
@@ -283,7 +290,7 @@
    * @extends Error
    * @uses Metal.Class
    */
-  var Err = Metal.Error = Backbone.Error = Class.extend.call(Error, {
+  var Err = Metal.Error = Class.extend.call(Error, {
   
     /**
      * @property {String} urlRoot - The root url to be used in the error message.
@@ -374,7 +381,7 @@
    * @param {String} [message.url] - The url to visit for more help.
    * @param {Boolean} [test] - An optional boolean. If falsy, the deprecation will be displayed.
    */
-  var deprecate = Metal.deprecate = Backbone.deprecate = function(message, test) {
+  var deprecate = Metal.deprecate = function(message, test) {
   
     // Returns if test is provided and is falsy.
     if (test !== undefined && test) {
@@ -409,7 +416,7 @@
    */
   deprecate._format = function(prev, next, url) {
     return (
-      "" + prev + " is going to be removed in the future." +
+      "" + prev + " is going to be removed in the future. " +
       ("Please use " + next + " instead.") +
       (url ? " See: " + url : '')
     );
@@ -452,7 +459,7 @@
    * @extends Metal.Mixin
    * @mixes Backbone.Events
    */
-  var Events = Metal.Events = Backbone.Events = new Mixin(Backbone.Events);
+  var Events = Metal.Events = new Mixin(Backbone.Events);
   
   /**
    * @class Class
@@ -475,7 +482,7 @@
    * @private
    * @method getEventName
    * @param {String} match - The matched substring.
-   * @param {Number} offset - The offset of the matched substring within the total string being examined.
+   * @param {Number} offset - The offset of the matched substring.
    * @param {String} eventName - The event name.
    * @return {String} - The uppercase event name.
    */
@@ -492,7 +499,7 @@
    * @memberOf Backbone
    * @extends Metal.Mixin
    */
-  var Utils = Metal.Utils = Backbone.Utils = new Mixin({
+  var Utils = Metal.Utils = new Mixin({
   
     /**
      * Trigger an event and/or a corresponding method name.
@@ -643,6 +650,51 @@
       return !!value && value instanceof Mixin;
     }
   });
+  
+  // Override Backbone built-ins so methods like `_.isClass` and `_.isMixin` will
+  // function properly.
+  
+  /**
+   * @mixin Events
+   * @namespace Backbone
+   * @type {Mixin}
+   */
+  Backbone.Events = Events;
+  
+  /**
+   * @class Model
+   * @namespace Backbone
+   * @type {Class}
+   */
+  Backbone.Model = classify(Backbone.Model);
+  
+  /**
+   * @class Collection
+   * @namespace Backbone
+   * @type {Class}
+   */
+  Backbone.Collection = classify(Backbone.Collection);
+  
+  /**
+   * @class View
+   * @namespace Backbone
+   * @type {Class}
+   */
+  Backbone.View = classify(Backbone.View);
+  
+  /**
+   * @class Router
+   * @namespace Backbone
+   * @type {Class}
+   */
+  Backbone.Router = classify(Backbone.Router);
+  
+  /**
+   * @class History
+   * @namespace Backbone
+   * @type {Class}
+   */
+  Backbone.History = classify(Backbone.History);
   
   return Metal;
 });
