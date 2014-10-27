@@ -1,26 +1,41 @@
-global.Backbone = require('backbone');
-global._ = require('underscore');
+var root;
 
-require('6to5/register');
-require('../src/metal');
+if (typeof exports !== 'undefined') {
+  root = global;
+  root.Backbone = require('backbone');
+  root._ = require('underscore');
+  require('6to5/register');
+  require('../src/metal');
 
-global.Metal = Backbone.Metal;
+  root.chai = require('chai');
+  root.sinon = require('sinon');
+  root.chai.use(require('sinon-chai'));
 
-var chai = require('chai');
-var sinon = require('sinon');
-chai.use(require('sinon-chai'));
+  setup();
+} else {
+  root = window;
+  mocha.setup('bdd');
+  root.onload = function() {
+    mocha.checkLeaks();
+    mocha.globals(['stub', 'spy']);
+    mocha.run();
+    setup();
+  };
+}
 
-global.sinon  = sinon;
-global.expect = chai.expect;
+root.Metal = Backbone.Metal;
+root.expect = chai.expect;
 
-beforeEach(function() {
-  this.sinon = sinon.sandbox.create();
-  global.stub = this.sinon.stub.bind(this.sinon);
-  global.spy  = this.sinon.spy.bind(this.sinon);
-});
+function setup() {
+  beforeEach(function() {
+    this.sandbox = sinon.sandbox.create();
+    root.stub = this.sandbox.stub.bind(this.sandbox);
+    root.spy  = this.sandbox.spy.bind(this.sandbox);
+  });
 
-afterEach(function() {
-  delete global.stub;
-  delete global.spy;
-  this.sinon.restore();
-});
+  afterEach(function() {
+    delete root.stub;
+    delete root.spy;
+    this.sandbox.restore();
+  });
+}

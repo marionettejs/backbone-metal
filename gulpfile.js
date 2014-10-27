@@ -11,13 +11,17 @@ var mocha      = require('gulp-mocha');
 var dox        = require('gulp-dox');
 var package    = require('./package');
 
-gulp.task('build', function() {
+function compile() {
   return gulp.src('src/wrapper.js')
     .pipe(preprocess())
     .pipe(rename(package.name + '.js'))
     .pipe(sourcemaps.init())
       .pipe(to5({ blacklist: ['useStrict', '_declarations'] }))
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write('./'));
+}
+
+gulp.task('build', function() {
+  return compile()
     .pipe(gulp.dest('dist'))
       .pipe(filter(['*', '!**/*.js.map']))
       .pipe(uglify())
@@ -25,6 +29,11 @@ gulp.task('build', function() {
       .pipe(rename({ extname: '.min.js' }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist'));
+});
+
+gulp.task('build:tmp', function() {
+  return compile()
+    .pipe(gulp.dest('tmp'));
 });
 
 gulp.task('docs', function() {
@@ -44,7 +53,7 @@ gulp.task('mocha', function() {
     .pipe(mocha({ reporter: 'spec' }));
 });
 
-gulp.task('test', ['jshint', 'mocha']);
+gulp.task('test', ['build:tmp', 'jshint', 'mocha']);
 
 gulp.task('watch', function() {
   gulp.watch('src/**.js', ['test']);

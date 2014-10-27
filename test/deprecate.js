@@ -1,6 +1,6 @@
 describe('deprecate', function() {
   beforeEach(function() {
-    this.sinon.stub(Metal.deprecate, '_warn');
+    stub(Metal.deprecate, '_warn');
     Metal.deprecate._cache = {};
   });
 
