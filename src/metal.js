@@ -604,11 +604,11 @@ _.mixin({
    * ```js
    * _.isClass(Class.extend(...));
    * // >> true
+   * _.isClass(new Class());
+   * // >> true
    * _.isClass(function() {...});
    * // >> false
    * _.isClass({...});
-   * // >> false
-   * _.isClass(new Class());
    * // >> false
    * ```
    * @public
@@ -617,7 +617,7 @@ _.mixin({
    * @param {*} value - The value to check.
    */
   isClass(value) {
-    return !!value && value.prototype instanceof Class;
+    return !!value && (value instanceof Class || value.prototype instanceof Class);
   },
 
   /**

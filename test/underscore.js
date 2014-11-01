@@ -10,6 +10,11 @@ describe('Underscore mixins', function() {
         .to.be.true;
     });
 
+    it('should return true for instances of Class', function() {
+      expect(_.isClass(new this.MyClass()))
+        .to.be.true;
+    });
+
     it('should return false for normal constructors', function() {
       expect(_.isClass(this.MyCtor))
         .to.be.false;
