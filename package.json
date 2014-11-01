@@ -1,6 +1,6 @@
 {
   "name": "backbone-metal",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Classes, Mixins, and Utils for Backbone Apps",
   "main": "./dist/backbone-metal.js",
   "scripts": {
