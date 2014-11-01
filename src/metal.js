@@ -41,12 +41,22 @@ var superTest = (/xyz/.test(function(){return 'xyz';})) ? /\b_super\b/ : /.*/;
  * @param {Object} source - The source object.
  */
 function wrapAll(dest, source) {
-  _.forEach(source, function(method, name) {
-    // If we didn't find the original value in the original object
-    var superMethod = dest[name];
+  var keys = _.keys(source),
+      length = keys.length,
+      i, name, method, superMethod, hasSuper;
+
+  // Return if source object is empty
+  if (length === 0) {
+    return;
+  }
+
+  for (i = 0; i < length; i++) {
+    name = keys[i];
+    method = source[name];
+    superMethod = dest[name];
 
     // Test if new method calls `_super`
-    var hasSuper = superTest.test(method);
+    hasSuper = superTest.test(method);
 
     // Only wrap the new method if the original method was a function and the
     // new method calls `_super`.
@@ -57,7 +67,7 @@ function wrapAll(dest, source) {
     } else {
       dest[name] = method;
     }
-  });
+  }
 }
 
 /**
