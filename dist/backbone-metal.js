@@ -8,7 +8,7 @@
   }
 })(this, function(Backbone, _) {
   'use strict';
-  
+
   var _slice = Array.prototype.slice;
 
   /**
@@ -54,12 +54,22 @@
    * @param {Object} source - The source object.
    */
   function wrapAll(dest, source) {
-    _.forEach(source, function(method, name) {
-      // If we didn't find the original value in the original object
-      var superMethod = dest[name];
+    var keys = _.keys(source),
+        length = keys.length,
+        i, name, method, superMethod, hasSuper;
+  
+    // Return if source object is empty
+    if (length === 0) {
+      return;
+    }
+  
+    for (i = 0; i < length; i++) {
+      name = keys[i];
+      method = source[name];
+      superMethod = dest[name];
   
       // Test if new method calls `_super`
-      var hasSuper = superTest.test(method);
+      hasSuper = superTest.test(method);
   
       // Only wrap the new method if the original method was a function and the
       // new method calls `_super`.
@@ -70,7 +80,7 @@
       } else {
         dest[name] = method;
       }
-    });
+    }
   }
   
   /**
@@ -611,11 +621,11 @@
      * ```js
      * _.isClass(Class.extend(...));
      * // >> true
+     * _.isClass(new Class());
+     * // >> true
      * _.isClass(function() {...});
      * // >> false
      * _.isClass({...});
-     * // >> false
-     * _.isClass(new Class());
      * // >> false
      * ```
      * @public
@@ -624,7 +634,7 @@
      * @param {*} value - The value to check.
      */
     isClass: function(value) {
-      return !!value && value.prototype instanceof Class;
+      return !!value && (value instanceof Class || value.prototype instanceof Class);
     },
   
     /**
