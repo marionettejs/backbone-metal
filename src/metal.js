@@ -467,7 +467,7 @@ Class.mixin(Events);
  * @private
  * @const {RegExp}
  */
-var triggerSplitter = /(^|:)(\w)/gi;
+var _triggerSplitter = /(^|:)(\w)/gi;
 
 /**
  * Take the event section ("section1:section2:section3") and turn it in to
@@ -480,9 +480,18 @@ var triggerSplitter = /(^|:)(\w)/gi;
  * @param {String} eventName - The event name.
  * @return {String} - The uppercase event name.
  */
-function getEventName(match, offset, eventName) {
+function _getEventName(match, offset, eventName) {
   return eventName.toUpperCase();
 }
+
+/**
+ * An internal cache to avoid calculating the methodName every time
+ * triggerMethod is called.
+ *
+ * @private
+ * @var {Object}
+ */
+var _triggerMethodCache = {};
 
 /**
  * A set of utility functions to be mixed into any class. Already mixed into
@@ -531,9 +540,13 @@ var Utils = Metal.Utils = new Mixin({
    * @return {*} - The result of the method.
    */
   triggerMethod(event, ...args) {
+    var methodName = _triggerMethodCache[event];
 
-    // Get the method name from the event name
-    var methodName = 'on' + event.replace(triggerSplitter, getEventName);
+    if (!methodName) {
+      methodName = 'on' + event.replace(_triggerSplitter, _getEventName);
+      _triggerMethodCache[event] = methodName;
+    }
+
     var method = this[methodName];
     var result;
 
