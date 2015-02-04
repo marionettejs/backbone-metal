@@ -278,10 +278,6 @@
     }
   });
 
-  var classify = Metal.classify = function (Klass) {
-    return Metal.Class.extend(_.extend({ constructor: Klass }, _.omit(Klass.prototype, _.keys(Backbone.Events))), _.omit(Klass, _.keys(Class)));
-  };
-
   /**
    * Allows you to create mixins, whose properties can be added to other classes.
    *
@@ -486,51 +482,6 @@
    * @mixes Events
    */
   Class.mixin(Events);
-
-  // Override Backbone built-ins so methods like `_.isClass` and `_.isMixin` will
-  // function properly.
-
-  /**
-   * @mixin Events
-   * @namespace Backbone
-   * @type {Mixin}
-   */
-  Backbone.Events = Events;
-
-  /**
-   * @class Model
-   * @namespace Backbone
-   * @type {Class}
-   */
-  Backbone.Model = classify(Backbone.Model);
-
-  /**
-   * @class Collection
-   * @namespace Backbone
-   * @type {Class}
-   */
-  Backbone.Collection = classify(Backbone.Collection);
-
-  /**
-   * @class View
-   * @namespace Backbone
-   * @type {Class}
-   */
-  Backbone.View = classify(Backbone.View);
-
-  /**
-   * @class Router
-   * @namespace Backbone
-   * @type {Class}
-   */
-  Backbone.Router = classify(Backbone.Router);
-
-  /**
-   * @class History
-   * @namespace Backbone
-   * @type {Class}
-   */
-  Backbone.History = classify(Backbone.History);
 
 
   return Metal;
