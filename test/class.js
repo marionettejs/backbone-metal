@@ -11,18 +11,6 @@ describe('Class', function() {
     });
   });
 
-  describe('mixins', function() {
-    it('should contain Events on the prototype', function() {
-      expect(Metal.Class.prototype)
-        .to.contain(Metal.Events);
-    });
-
-    it('should contain Utils on the prototype', function() {
-      expect(Metal.Class.prototype)
-        .to.contain(Metal.Utils);
-    });
-  });
-
   describe('#extend', function() {
     beforeEach(function() {
       this.method1 = stub();
@@ -50,8 +38,8 @@ describe('Class', function() {
     });
 
     it('should copy over the parent class\'s statics', function() {
-      expect(_.clone(this.Subclass))
-        .to.contain(_.clone(Metal.Class));
+      expect(_.pick(this.Subclass, _.keys(this.Subclass)))
+        .to.contain(_.pick(Metal.Class, _.keys(Metal.Class)));
     });
 
     it('should set __super__ to the parent class\'s prototype', function() {
@@ -107,16 +95,15 @@ describe('Class', function() {
 
       describe('when not in the constructor', function() {
         beforeEach(function() {
-          stub(Metal.Class.prototype, 'on');
+          stub(Metal.Class.prototype, 'initialize');
           this.Subclass = Metal.Class.extend({
-            on: function() { this._super('arg'); }
+            initialize: function() { this._super('arg'); }
           });
           this.instance = new this.Subclass();
-          this.instance.on();
         });
 
         it('should call the parent class\'s matching function', function() {
-          expect(Metal.Class.prototype.on)
+          expect(Metal.Class.prototype.initialize)
             .to.have.been.calledOn(this.instance)
             .and.calledWith('arg');
         });
@@ -188,6 +175,35 @@ describe('Class', function() {
         expect(this.methodStub)
           .to.have.been.calledOn(this.Subclass.prototype)
           .and.calledWith('arg');
+      });
+    });
+  });
+
+  describe('#isClass', function() {
+    beforeEach(function() {
+      this.MyClass = Metal.Class.extend().extend();
+      this.MyCtor = function() {};
+    });
+
+    it('should return true for classes', function() {
+      expect(Metal.Class.isClass(this.MyClass))
+        .to.be.true;
+    });
+
+    it('should return true for instances of Class', function() {
+      expect(Metal.Class.isClass(new this.MyClass()))
+        .to.be.true;
+    });
+
+    it('should return false for normal constructors', function() {
+      expect(Metal.Class.isClass(this.MyCtor))
+        .to.be.false;
+    });
+
+    it('should return false for other values', function() {
+      _.each([true, false, undefined, null, 0, 'hi'], function(val) {
+        expect(Metal.Class.isClass(val))
+          .to.be.false;
       });
     });
   });

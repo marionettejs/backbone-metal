@@ -31,22 +31,6 @@ describe('deprecate', function() {
     });
   });
 
-  describe('when calling with an object with a url', function() {
-    beforeEach(function() {
-      Metal.deprecate({
-        prev: 'foo',
-        next: 'bar',
-        url: 'baz'
-      });
-    });
-
-    it('should `console.warn` the message', function() {
-      expect(Metal.deprecate._warn)
-        .to.have.been.calledOnce
-        .and.calledWith('Deprecation warning: foo is going to be removed in the future. Please use bar instead. See: baz');
-    });
-  });
-
   describe('when calling with a message and a falsy test', function() {
     beforeEach(function() {
       Metal.deprecate('bar', false);

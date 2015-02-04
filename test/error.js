@@ -44,29 +44,6 @@ describe('Error', function() {
     });
   });
 
-  describe('when passed a message and options with a url', function() {
-    beforeEach(function() {
-      this.error = new Metal.Error('Foo', {
-        name: 'Bar',
-        url: '#baz'
-      });
-    });
-
-    it('should contain the correct properties', function() {
-      expect(this.error)
-        .to.contain({
-          name: 'Bar',
-          message: 'Foo',
-          url: 'http://github.com/thejameskyle/backbone-metal#baz'
-        });
-    });
-
-    it('should output the correct string', function() {
-      expect(this.error.toString())
-        .to.equal('Bar: Foo See: http://github.com/thejameskyle/backbone-metal#baz');
-    });
-  });
-
   describe('when passed options', function() {
     beforeEach(function() {
       this.error = new Metal.Error({
@@ -86,30 +63,6 @@ describe('Error', function() {
     it('should output the correct string', function() {
       expect(this.error.toString())
         .to.equal('Foo: Bar');
-    });
-  });
-
-  describe('when passed options with a url', function() {
-    beforeEach(function() {
-      this.error = new Metal.Error({
-        name: 'Foo',
-        message: 'Bar',
-        url: '#baz'
-      });
-    });
-
-    it('should contain the correct properties', function() {
-      expect(this.error)
-        .to.contain({
-          name: 'Foo',
-          message: 'Bar',
-          url: 'http://github.com/thejameskyle/backbone-metal#baz'
-        });
-    });
-
-    it('should output the correct string', function() {
-      expect(this.error.toString())
-        .to.equal('Foo: Bar See: http://github.com/thejameskyle/backbone-metal#baz');
     });
   });
 
