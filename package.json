@@ -1,7 +1,7 @@
 {
   "name": "backbone-metal",
   "version": "0.4.0",
-  "description": "Classes, Mixins, and Utils for Backbone Apps",
+  "description": "Classes, Mixins, Errors, and more.",
   "main": "./dist/backbone-metal.js",
   "scripts": {
     "build": "gulp build",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thejameskyle/backbone.metal.git"
+    "url": "https://github.com/marionettejs/backbone.metal.git"
   },
   "author": "James Kyle <me@thejameskyle.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thejameskyle/backbone.metal/issues"
+    "url": "https://github.com/marionettejs/backbone.metal/issues"
   },
-  "homepage": "https://github.com/thejameskyle/backbone.metal",
+  "homepage": "https://github.com/marionettejs/backbone.metal",
   "devDependencies": {
     "6to5": "^3.2.1",
     "chai": "^1.10.0",

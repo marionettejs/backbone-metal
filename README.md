@@ -1,7 +1,9 @@
 Backbone Metal
 ==============
 
-Classes, Mixins, and Utils for Backbone Apps.
+Classes, Mixins, Errors, and more.
+
+[![Travis Status](http://img.shields.io/travis/marionettejs/backbone-metal/master.svg?style=flat&amp;label=travis)](https://travis-ci.org/marionettejs/backbone-metal) [![Code Climate Score](http://img.shields.io/codeclimate/github/marionettejs/backbone-metal.svg?style=flat)](https://codeclimate.com/github/marionettejs/backbone-metal) [![Coverage](http://img.shields.io/codeclimate/coverage/github/marionettejs/backbone-metal.svg?style=flat)](https://codeclimate.com/github/marionettejs/backbone-metal) [![Dependency Status](http://img.shields.io/david/marionettejs/backbone-metal.svg?style=flat)](https://david-dm.org/marionettejs/backbone-metal)
 
 ## Usage
 
@@ -10,7 +12,7 @@ Classes, Mixins, and Utils for Backbone Apps.
 Classes are objects that you can instantiate with `new Class()`. You can also create a **subclass** from any existing class by calling its `extend()` method.
 
 ```js
-import Class from 'backbone-metal';
+import {Class} from 'backbone-metal';
 
 var MyClass = Class.extend({
   initialize(options) {
@@ -55,7 +57,7 @@ var myClass = new MyClass();
 When working with subclasses, sometimes you want to modify one of the parent's methods and then calling the parent method inside. You can easily do this by calling `_super`.
 
 ```js
-import Class from 'backbone-metal';
+import {Class} from 'backbone-metal';
 
 var FirstClass = Class.extend({
   initialize() {
@@ -83,7 +85,7 @@ var secondClass = new SecondClass();
 [clone](http://git-scm.com/docs/git-clone) this repo.
 
 ```
-git clone git@github.com:thejameskyle/backbone-metal.git && cd backbone-metal
+git clone git@github.com:marionettejs/backbone-metal.git && cd backbone-metal
 ```
 
 Make sure [Node.js](http://nodejs.org/) and [npm](https://www.npmjs.org/) are
