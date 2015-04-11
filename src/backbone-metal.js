@@ -443,15 +443,33 @@ deprecate._format = function(prev, next) {
 };
 
 /**
- * A safe reference to `console.warn` that will fallback to `console.log` or
- * `_noop` if the `console` object does not exist.
+ * A safe reference to the console object that will fallback to an empty
+ * object.
+ *
+ * @private
+ * @property _console
+ */
+var _console = typeof console !== 'undefined' ? console : {};
+
+/**
+ * A safe reference to the console.warn method that will fallback a noop.
+ *
+ * @private
+ * @property _warn
+ */
+var _warn = _console.warn || _console.log || _.noop;
+
+/**
+ * A safe reference to `console.warn`.
  *
  * @private
  * @method _warn
  * @memberOf deprecate
  * @param {*...} - The values to warn in the console.
  */
-deprecate._warn = typeof console !== 'undefined' && (console.warn || console.log) || _.noop;
+deprecate._warn = function() {
+  return _warn.apply(_console, arguments);
+};
 
 /**
  * An internal cache to avoid sending the same deprecation warning multiple
