@@ -88,8 +88,16 @@ function _wrapAll(dest, source) {
  * @memberOf Backbone
  */
 var Class = Metal.Class = function() {
+  this.cid = _.uniqueId(this.cidPrefix);
   this.initialize(...arguments);
 };
+
+/**
+ * Identifier prefix of the cid. It can be override.
+ * @public
+ * @attributeOf Class {String}
+ */
+Class.prototype.cidPrefix = 'metal';
 
 /**
  * An overridable method called when objects are instantiated. Does not do
