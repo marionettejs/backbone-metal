@@ -11,6 +11,42 @@ describe('Class', function() {
     });
   });
 
+  describe('#cid', function() {
+    beforeEach(function() {
+      this.instance = new Metal.Class();
+      this.instance2 = new Metal.Class();
+    });
+
+    it('should have a cid', function() {
+      expect(this.instance).to.have.property('cid')
+        .that.match(/^metal[0-9]+$/);
+    });
+
+    it('should cid`s aren`t equals', function() {
+      expect(this.instance2.cid).to.not.equal(this.instance.cid);
+    });
+  });
+
+  describe('#cidPrefix', function() {
+    beforeEach(function() {
+      this.prefix = 'subClass';
+
+      var Subclass = Metal.Class.extend({
+        cidPrefix: this.prefix
+      });
+
+      this.instance = new Subclass();
+    });
+
+    it('should override cidPrefix', function() {
+      expect(this.instance.cidPrefix).to.equal(this.prefix);
+    });
+
+    it('should contains into cid the radical of cidPrefix', function() {
+      expect(this.instance.cid).to.include(this.prefix);
+    });
+  });
+
   describe('#extend', function() {
     beforeEach(function() {
       this.method1 = stub();
