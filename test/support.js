@@ -70,19 +70,23 @@ describe('Support', function() {
 
   describe('when console.warn does not exist', function() {
     beforeEach(function(done) {
-      var prevWarn = console.warn;
-      var prevLog = console.log;
+      this.prevWarn = console.warn;
+      this.prevLog = console.log;
       this.logStub = stub(console, 'log');
       delete console.warn;
       console.warn = undefined;
       update(done);
-      console.warn = prevWarn;
-      console.log = prevLog;
     });
 
     describe('deprecate', function() {
       beforeEach(function() {
         Metal.deprecate('foo');
+        
+        // Metal.deprecate chooses the console function during execution.
+        // console.warn / console.log must be returned to normal to see 
+        // test results.
+        console.warn = this.prevWarn;
+        console.log = this.prevLog;
       });
 
       it('should use console.log instead', function() {

@@ -1,9 +1,21 @@
 describe('deprecate', function() {
   beforeEach(function() {
-    stub(Metal.deprecate, '_warn');
+    spy(Metal.deprecate, '_warn');
     Metal.deprecate._cache = {};
   });
 
+  describe('Metal.deprecate._warn', function() {
+    beforeEach(function() {
+      Metal.deprecate._warn('foo');
+    });
+
+    it('should `console.warn` the message', function() {
+      expect(Metal.deprecate._warn)
+        .to.have.been.calledOnce
+        .and.calledWith('foo');
+    });
+  });
+  
   describe('when calling with a message', function() {
     beforeEach(function() {
       Metal.deprecate('foo');
