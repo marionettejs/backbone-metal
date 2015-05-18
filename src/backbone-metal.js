@@ -32,7 +32,7 @@ function _wrap(method, superMethod) {
  * @private
  * @const {RegExp}
  */
-const CONTAINS_SUPER = (/xyz/.test(new Function('xyz'))) ? /\b_super\b/ : /.*/;
+const CONTAINS_SUPER = (/xyz/.test(function() { xyz; })) ? /\b_super\b/ : /.*/; // jshint ignore:line
 
 /**
  * Assigns properties of source object to destination object, wrapping methods
