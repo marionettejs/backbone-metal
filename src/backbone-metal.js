@@ -258,13 +258,13 @@ _.extend(Class, {
    * Checks if `value` is a Metal Class.
    *
    * ```js
-   * _.isClass(Class.extend(...));
+   * Class.isClass(Class.extend(...));
    * // >> true
-   * _.isClass(new Class());
+   * Class.isClass(new Class());
    * // >> true
-   * _.isClass(function() {...});
+   * Class.isClass(function() {...});
    * // >> false
-   * _.isClass({...});
+   * Class.isClass({...});
    * // >> false
    * ```
    * @public
@@ -299,13 +299,13 @@ var Mixin = Metal.Mixin = function(protoProps) {
  * Checks if `value` is a Metal Mixin.
  *
  * ```js
- * _.isMixin(new Mixin());
+ * Mixin.isMixin(new Mixin());
  * // >> true
- * _.isMixin({});
+ * Mixin.isMixin({});
  * // >> false
- * _.isMixin(function() {...});
+ * Mixin.isMixin(function() {...});
  * // >> false
- * _.isMixin(new Class());
+ * Mixin.isMixin(new Class());
  * // >> false
  * ```
  *
