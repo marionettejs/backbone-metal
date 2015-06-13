@@ -1,6 +1,8 @@
+import Metal from '../../src/backbone-metal';
+
 describe('deprecate', function() {
   beforeEach(function() {
-    spy(Metal.deprecate, '_warn');
+    stub(Metal.deprecate, '_warn');
     Metal.deprecate._cache = {};
   });
 

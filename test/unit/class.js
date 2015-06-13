@@ -1,3 +1,6 @@
+import Metal from '../../src/backbone-metal';
+import _ from 'underscore';
+
 describe('Class', function() {
   describe('#constructor', function() {
     beforeEach(function() {

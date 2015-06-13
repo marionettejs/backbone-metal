@@ -1,3 +1,6 @@
+import Metal from '../../src/backbone-metal';
+import _ from 'underscore';
+
 describe('Mixin', function() {
   describe('#constructor', function() {
     beforeEach(function() {

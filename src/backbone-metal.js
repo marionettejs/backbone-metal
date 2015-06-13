@@ -40,7 +40,7 @@ function _wrap(method, superMethod) {
  * @private
  * @const {RegExp}
  */
-const CONTAINS_SUPER = (/xyz/.test(function() { xyz; })) ? /\b_super\b/ : /.*/; // jshint ignore:line
+const CONTAINS_SUPER = (/xyz/.test(function() { xyz; })) ? /\b_super\b/ : /.*/; // eslint-disable-line
 
 /**
  * Assigns properties of source object to destination object, wrapping methods
@@ -177,7 +177,10 @@ _.extend(Class, {
 
     // Set the prototype chain to inherit from `parent`, without calling
     // `parent`'s constructor function.
-    let Surrogate = function() { this.constructor = Child; };
+    let Surrogate = function() {
+      this.constructor = Child;
+    };
+
     Surrogate.prototype = Parent.prototype;
     Child.prototype = new Surrogate();
 

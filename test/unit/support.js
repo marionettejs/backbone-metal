@@ -1,10 +1,14 @@
+import ImportedMetal from '../../src/backbone-metal';
+
+let Metal = ImportedMetal;
+
 let update;
 
 if (typeof exports !== 'undefined') {
   update = done => {
-    let packageName = require('../package').name;
-    delete require.cache[require.resolve('../src/' + packageName)];
-    Metal = require('../src/' + packageName);
+    let packageName = require('../../package').name;
+    delete require.cache[require.resolve('../../src/' + packageName)];
+    Metal = require('../../src/' + packageName);
     done();
   };
 } else {
@@ -22,16 +26,18 @@ describe('Support', function() {
   describe('when Function.toString does not return body', function() {
     beforeEach(function(done) {
       let prevToString = Function.prototype.toString;
-      Function.prototype.toString = () => '[hidden]';
+      Function.prototype.toString = () => '[hidden]'; // eslint-disable-line no-extend-native
       update(done);
-      Function.prototype.toString = prevToString;
+      Function.prototype.toString = prevToString; // eslint-disable-line no-extend-native
     });
 
     describe('Super', function() {
       beforeEach(function() {
         stub(Metal.Class.prototype, 'constructor');
         this.Subclass = Metal.Class.extend({
-          constructor() { this._super('arg'); }
+          constructor() {
+            this._super('arg');
+          }
         });
         this.instance = new this.Subclass();
       });
@@ -99,11 +105,11 @@ describe('Support', function() {
 
   describe('when console does not exist', function() {
     beforeEach(function(done) {
-      let prevConsole = root.console;
-      delete root.console;
-      root.console = undefined;
+      let prevConsole = global.console;
+      delete global.console;
+      global.console = undefined;
       update(done);
-      root.console = prevConsole;
+      global.console = prevConsole;
     });
 
     describe('deprecate', function() {

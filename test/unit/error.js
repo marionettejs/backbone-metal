@@ -1,3 +1,5 @@
+import Metal from '../../src/backbone-metal';
+
 describe('Error', function() {
   it('should be subclass of native Error', function() {
     expect(new Metal.Error())
@@ -69,12 +71,12 @@ describe('Error', function() {
   describe('when passed valid error properties', function() {
     beforeEach(function() {
       this.props = {
-        description  : 'myDescription',
-        fileName     : 'myFileName',
-        lineNumber   : 'myLineNumber',
-        name         : 'myName',
-        message      : 'myMessage',
-        number       : 'myNumber'
+        description: 'myDescription',
+        fileName: 'myFileName',
+        lineNumber: 'myLineNumber',
+        name: 'myName',
+        message: 'myMessage',
+        number: 'myNumber'
       };
       this.error = new Metal.Error(this.props);
     });
@@ -88,9 +90,9 @@ describe('Error', function() {
   describe('when passed invalid error properties', function() {
     beforeEach(function() {
       this.props = {
-        foo : 'myFoo',
-        bar : 'myBar',
-        baz : 'myBaz'
+        foo: 'myFoo',
+        bar: 'myBar',
+        baz: 'myBaz'
       };
       this.error = new Metal.Error(this.props);
     });

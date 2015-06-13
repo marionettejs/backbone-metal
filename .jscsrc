@@ -1,0 +1,7 @@
+{
+  "preset": "airbnb",
+  "maximumLineLength": null,
+  "esnext": true,
+  "safeContextKeyword": null,
+  "disallowMultipleVarDecl": null
+}
