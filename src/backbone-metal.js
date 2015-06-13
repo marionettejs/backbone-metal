@@ -92,22 +92,36 @@ var Class = Metal.Class = function() {
   this.initialize(...arguments);
 };
 
-/**
- * Identifier prefix of the cid. It can be override.
- * @public
- * @attributeOf Class {String}
- */
-Class.prototype.cidPrefix = 'metal';
+_.extend(Class.prototype, {
 
-/**
- * An overridable method called when objects are instantiated. Does not do
- * anything by default.
- *
- * @public
- * @abstract
- * @method initialize
- */
-Class.prototype.initialize = _.noop;
+  /**
+   * Identifier prefix of the cid. It can be override.
+   *
+   * @public
+   * @attributeOf Class {String}
+   */
+  cidPrefix: 'metal',
+
+  /**
+   * An overridable method called when objects are instantiated. Does not do
+   * anything by default.
+   *
+   * @public
+   * @abstract
+   * @method initialize
+   */
+  initialize: _.noop,
+
+  /**
+   * Destroy a Class by removing all listeners.
+   *
+   * @public
+   * @method destroy
+   */
+  destroy() {
+    this.stopListening();
+  }
+});
 
 _.extend(Class, {
 
