@@ -10,9 +10,9 @@ const Metal = Backbone.Metal = {};
  * Empty no-op function.
  *
  * @private
- * @method noop
+ * @method _noop
  */
-function noop() {}
+function _noop() {}
 
 /**
  * Wraps the passed method so that `this._super` will point to the superMethod
@@ -95,7 +95,7 @@ function _wrapAll(dest, source) {
  * @memberOf Metal
  * @memberOf Backbone
  */
-const Class = Metal.Class = function() {
+const Class = Metal.Class = function Class() {
   this.cid = _.uniqueId(this.cidPrefix);
   this.initialize(...arguments);
 };
@@ -118,7 +118,7 @@ _.extend(Class.prototype, {
    * @abstract
    * @method initialize
    */
-  initialize: noop,
+  initialize: _noop,
 
   /**
    * Destroy a Class by removing all listeners.
@@ -312,7 +312,7 @@ _.extend(Class, {
  * @memberOf Backbone
  * @param {Object} protoProps - The properties to be added to the prototype.
  */
-const Mixin = Metal.Mixin = function(protoProps) {
+const Mixin = Metal.Mixin = function Mixin(protoProps) {
   // Add prototype properties (instance properties) to the class, if supplied.
   _.extend(this, protoProps);
 };
@@ -336,7 +336,7 @@ const Mixin = Metal.Mixin = function(protoProps) {
  * @memberOf _
  * @param {*} value - The value to check.
  */
-Mixin.isMixin = function(value) {
+Mixin.isMixin = function isMixin(value) {
   return !!value && value instanceof Mixin;
 };
 
@@ -436,7 +436,7 @@ _.extend(Err, Class);
  * @param {String} message.next - The replacement for the deprecated item.
  * @param {Boolean} [test] - An optional boolean. If falsy, the deprecation will be displayed.
  */
-const deprecate = Metal.deprecate = function(message, test) {
+const deprecate = Metal.deprecate = function deprecate(message, test) {
 
   // Returns if test is provided and is falsy.
   if (test !== undefined && test) {
@@ -468,7 +468,7 @@ const deprecate = Metal.deprecate = function(message, test) {
  * @param {String} next - The replacement for the deprecated item.
  * @return {String} - The formatted message.
  */
-deprecate._format = function(prev, next) {
+deprecate._format = function _format(prev, next) {
   return `${prev} is going to be removed in the future. Please use ${next} instead.`;
 };
 
@@ -485,9 +485,9 @@ const _console = typeof console !== 'undefined' ? console : {};
  * A safe reference to the console.warn method that will fallback a noop.
  *
  * @private
- * @property _warn
+ * @property _warnMethod
  */
-const _warn = _console.warn || _console.log || noop;
+const _warnMethod = _console.warn || _console.log || _noop;
 
 /**
  * A safe reference to `console.warn`.
@@ -497,8 +497,8 @@ const _warn = _console.warn || _console.log || noop;
  * @memberOf deprecate
  * @param {*...} - The values to warn in the console.
  */
-deprecate._warn = function() {
-  return _warn.apply(_console, arguments);
+deprecate._warn = function _warn() {
+  return _warnMethod.apply(_console, arguments);
 };
 
 /**
