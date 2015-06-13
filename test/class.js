@@ -11,6 +11,19 @@ describe('Class', function() {
     });
   });
 
+  describe('#destroy', function() {
+    beforeEach(function() {
+      this.instance = new Metal.Class();
+      stub(this.instance, 'stopListening');
+      this.instance.destroy();
+    });
+
+    it('should call stopListening', function() {
+      expect(this.instance.stopListening)
+        .to.have.been.called;
+    });
+  });
+
   describe('#cid', function() {
     beforeEach(function() {
       this.instance = new Metal.Class();
