@@ -81,9 +81,9 @@ describe('Support', function() {
     describe('deprecate', function() {
       beforeEach(function() {
         Metal.deprecate('foo');
-        
+
         // Metal.deprecate chooses the console function during execution.
-        // console.warn / console.log must be returned to normal to see 
+        // console.warn / console.log must be returned to normal to see
         // test results.
         console.warn = this.prevWarn;
         console.log = this.prevLog;
@@ -102,20 +102,14 @@ describe('Support', function() {
       var prevConsole = root.console;
       delete root.console;
       root.console = undefined;
-      stub(_, 'noop');
       update(done);
       root.console = prevConsole;
     });
 
     describe('deprecate', function() {
-      beforeEach(function() {
-        Metal.deprecate('foo');
-      });
-
-      it('should use _.noop instead', function() {
-        expect(_.noop)
-          .to.have.been.calledOnce
-          .and.calledWith('Deprecation warning: foo');
+      it('should not error', function() {
+        expect(() => Metal.deprecate('foo'))
+          .not.to.throw();
       });
     });
   });

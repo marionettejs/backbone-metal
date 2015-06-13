@@ -7,6 +7,14 @@ import Backbone from 'backbone';
 var Metal = Backbone.Metal = {};
 
 /**
+ * Empty no-op function.
+ *
+ * @private
+ * @method noop
+ */
+function noop() {}
+
+/**
  * Wraps the passed method so that `this._super` will point to the superMethod
  * when the method is invoked.
  *
@@ -110,7 +118,7 @@ _.extend(Class.prototype, {
    * @abstract
    * @method initialize
    */
-  initialize: _.noop,
+  initialize: noop,
 
   /**
    * Destroy a Class by removing all listeners.
@@ -479,7 +487,7 @@ var _console = typeof console !== 'undefined' ? console : {};
  * @private
  * @property _warn
  */
-var _warn = _console.warn || _console.log || _.noop;
+var _warn = _console.warn || _console.log || noop;
 
 /**
  * A safe reference to `console.warn`.
