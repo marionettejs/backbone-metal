@@ -4,7 +4,7 @@ import Backbone from 'backbone';
 /**
  * @module Metal
  */
-var Metal = Backbone.Metal = {};
+const Metal = Backbone.Metal = {};
 
 /**
  * Empty no-op function.
@@ -26,9 +26,9 @@ function noop() {}
  */
 function _wrap(method, superMethod) {
   return function() {
-    var prevSuper = this._super;
+    let prevSuper = this._super;
     this._super = superMethod;
-    var ret = method.apply(this, arguments);
+    let ret = method.apply(this, arguments);
     this._super = prevSuper;
     return ret;
   };
@@ -52,7 +52,7 @@ const CONTAINS_SUPER = (/xyz/.test(function() { xyz; })) ? /\b_super\b/ : /.*/; 
  * @param {Object} source - The source object.
  */
 function _wrapAll(dest, source) {
-  var keys = _.keys(source),
+  let keys = _.keys(source),
       length = keys.length,
       i, name, method, superMethod, hasSuper;
 
@@ -80,7 +80,7 @@ function _wrapAll(dest, source) {
  * Creates a new Class.
  *
  * ```js
- * var MyClass = Class.extend({
+ * const MyClass = Class.extend({
  *   initialize() {
  *     console.log('Created!');
  *   }
@@ -95,7 +95,7 @@ function _wrapAll(dest, source) {
  * @memberOf Metal
  * @memberOf Backbone
  */
-var Class = Metal.Class = function() {
+const Class = Metal.Class = function() {
   this.cid = _.uniqueId(this.cidPrefix);
   this.initialize(...arguments);
 };
@@ -137,11 +137,11 @@ _.extend(Class, {
    * Creates a new subclass.
    *
    * ```js
-   * var MyClass = Class.extend({
+   * const MyClass = Class.extend({
    *   // ...
    * });
    *
-   * var myClass = new MyClass();
+   * const myClass = new MyClass();
    * myClass instanceof MyClass
    * // true
    * myClass instanceof Class
@@ -155,8 +155,8 @@ _.extend(Class, {
    * @param {Object} [staticProps] - The properties to be added to the constructor.
    */
   extend(protoProps, staticProps) {
-    var Parent = this;
-    var Child;
+    let Parent = this;
+    let Child;
 
     // The constructor function for the new subclass is either defined by you
     // (the "constructor" property in your `extend` definition), or defaulted
@@ -177,7 +177,7 @@ _.extend(Class, {
 
     // Set the prototype chain to inherit from `parent`, without calling
     // `parent`'s constructor function.
-    var Surrogate = function() { this.constructor = Child; };
+    let Surrogate = function() { this.constructor = Child; };
     Surrogate.prototype = Parent.prototype;
     Child.prototype = new Surrogate();
 
@@ -201,13 +201,13 @@ _.extend(Class, {
    * Mixes properties onto the class's prototype.
    *
    * ```js
-   * var MyMixin = new Mixin({
+   * const MyMixin = new Mixin({
    *   alert() {
    *     console.log('Alert!');
    *   }
    * });
    *
-   * var MyClass = Class.extend({
+   * const MyClass = Class.extend({
    *   initialize() {
    *     this.alert();
    *   }
@@ -235,13 +235,13 @@ _.extend(Class, {
    * Mixes properties onto the class's constructor.
    *
    * ```js
-   * var MyMixin = new Mixin({
+   * const MyMixin = new Mixin({
    *   alert() {
    *     console.log('Alert!');
    *   }
    * });
    *
-   * var MyClass = Class.extend(...);
+   * const MyClass = Class.extend(...);
    *
    * MyClass.include(MyMixin);
    *
@@ -252,7 +252,7 @@ _.extend(Class, {
    * You can also simply pass a plain javascript object.
    *
    * ```js
-   * var MyClass = Class.extend(...);
+   * const MyClass = Class.extend(...);
    *
    * MyClass.include({
    *   alert() {
@@ -312,7 +312,7 @@ _.extend(Class, {
  * @memberOf Backbone
  * @param {Object} protoProps - The properties to be added to the prototype.
  */
-var Mixin = Metal.Mixin = function(protoProps) {
+const Mixin = Metal.Mixin = function(protoProps) {
   // Add prototype properties (instance properties) to the class, if supplied.
   _.extend(this, protoProps);
 };
@@ -362,7 +362,7 @@ const ERROR_PROPS = [
  * @extends Error
  * @uses Metal.Class
  */
-var Err = Metal.Error = Class.extend.call(Error, {
+const Err = Metal.Error = Class.extend.call(Error, {
 
   /**
    * @public
@@ -380,7 +380,7 @@ var Err = Metal.Error = Class.extend.call(Error, {
     }
 
     // Create a fake error with message in order to capture a stack trace.
-    var error = Error.call(this, message);
+    let error = Error.call(this, message);
 
     // Copy over all the error-related properties.
     _.extend(this, _.pick(error, ERROR_PROPS), _.pick(options, ERROR_PROPS));
@@ -436,7 +436,7 @@ _.extend(Err, Class);
  * @param {String} message.next - The replacement for the deprecated item.
  * @param {Boolean} [test] - An optional boolean. If falsy, the deprecation will be displayed.
  */
-var deprecate = Metal.deprecate = function(message, test) {
+const deprecate = Metal.deprecate = function(message, test) {
 
   // Returns if test is provided and is falsy.
   if (test !== undefined && test) {
@@ -479,7 +479,7 @@ deprecate._format = function(prev, next) {
  * @private
  * @property _console
  */
-var _console = typeof console !== 'undefined' ? console : {};
+const _console = typeof console !== 'undefined' ? console : {};
 
 /**
  * A safe reference to the console.warn method that will fallback a noop.
@@ -487,7 +487,7 @@ var _console = typeof console !== 'undefined' ? console : {};
  * @private
  * @property _warn
  */
-var _warn = _console.warn || _console.log || noop;
+const _warn = _console.warn || _console.log || noop;
 
 /**
  * A safe reference to `console.warn`.
@@ -520,7 +520,7 @@ deprecate._cache = {};
  * @extends Metal.Mixin
  * @mixes Backbone.Events
  */
-var Events = Metal.Events = new Mixin(Backbone.Events);
+const Events = Metal.Events = new Mixin(Backbone.Events);
 
 /**
  * @class Class

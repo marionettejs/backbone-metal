@@ -1,19 +1,19 @@
-var update;
+let update;
 
 if (typeof exports !== 'undefined') {
-  update = function(done) {
-    var packageName = require('../package').name;
+  update = done => {
+    let packageName = require('../package').name;
     delete require.cache[require.resolve('../src/' + packageName)];
     Metal = require('../src/' + packageName);
     done();
   };
 } else {
-  update = function(done) {
-    var script = document.getElementById('lib');
-    var clone = document.createElement('script');
+  update = done => {
+    let script = document.getElementById('lib');
+    let clone = document.createElement('script');
     clone.src = script.src + '?t=' + Date.now();
     clone.id = script.id;
-    clone.onload = function() { done(); };
+    clone.onload = () => done();
     script.parentNode.replaceChild(clone, script);
   };
 }
@@ -21,8 +21,8 @@ if (typeof exports !== 'undefined') {
 describe('Support', function() {
   describe('when Function.toString does not return body', function() {
     beforeEach(function(done) {
-      var prevToString = Function.prototype.toString;
-      Function.prototype.toString = function() { return '[hidden]'; };
+      let prevToString = Function.prototype.toString;
+      Function.prototype.toString = () => '[hidden]';
       update(done);
       Function.prototype.toString = prevToString;
     });
@@ -31,7 +31,7 @@ describe('Support', function() {
       beforeEach(function() {
         stub(Metal.Class.prototype, 'constructor');
         this.Subclass = Metal.Class.extend({
-          constructor: function() { this._super('arg'); }
+          constructor() { this._super('arg'); }
         });
         this.instance = new this.Subclass();
       });
@@ -99,7 +99,7 @@ describe('Support', function() {
 
   describe('when console does not exist', function() {
     beforeEach(function(done) {
-      var prevConsole = root.console;
+      let prevConsole = root.console;
       delete root.console;
       root.console = undefined;
       update(done);

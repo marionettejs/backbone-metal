@@ -35,7 +35,7 @@ describe('Mixin', function() {
     });
 
     it('should return false for other values', function() {
-      _.each([true, false, undefined, null, 0, 'hi'], function(val) {
+      _.each([true, false, undefined, null, 0, 'hi'], (val) => {
         expect(Metal.Mixin.isMixin(val))
           .to.be.false;
       });

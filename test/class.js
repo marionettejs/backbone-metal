@@ -44,7 +44,7 @@ describe('Class', function() {
     beforeEach(function() {
       this.prefix = 'subClass';
 
-      var Subclass = Metal.Class.extend({
+      const Subclass = Metal.Class.extend({
         cidPrefix: this.prefix
       });
 

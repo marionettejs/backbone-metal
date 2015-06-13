@@ -15,7 +15,7 @@ describe('deprecate', function() {
         .and.calledWith('foo');
     });
   });
-  
+
   describe('when calling with a message', function() {
     beforeEach(function() {
       Metal.deprecate('foo');
