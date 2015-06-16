@@ -7,6 +7,7 @@ let update;
 if (typeof exports !== 'undefined') {
   update = done => {
     let packageName = require('../../package').name;
+    delete require.cache[require.resolve('../../src/deprecate')];
     delete require.cache[require.resolve('../../src/' + packageName)];
     Metal = require('../../src/' + packageName);
     done();
