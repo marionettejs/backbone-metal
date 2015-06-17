@@ -53,8 +53,8 @@
     "vinyl-source-stream": "^1.0.0"
   },
   "dependencies": {
-    "backbone": "^1.1.2",
-    "underscore": "^1.7.0"
+    "backbone": "^1.0.0",
+    "underscore": "^1.4.4"
   },
   "babelBoilerplateOptions": {
     "entryFileName": "backbone-metal",
