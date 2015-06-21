@@ -77,7 +77,7 @@ var secondClass = new SecondClass();
 // >> Second Class checking in!
 ```
 
-## Contibuting
+## Contributing
 
 ### Getting Started
 
