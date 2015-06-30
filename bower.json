@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "description": "Classes, Mixins, Errors, and more.",
   "main": "./dist/backbone-metal.js",
-  "homepage": "https://github.com/marionettejs/backbone.metal",
+  "homepage": "https://github.com/marionettejs/backbone-metal",
   "authors": [
     "James Kyle <me@thejameskyle.com>"
   ],
