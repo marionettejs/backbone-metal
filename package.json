@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/marionettejs/backbone.metal.git"
+    "url": "https://github.com/marionettejs/backbone-metal.git"
   },
   "author": "James Kyle <me@thejameskyle.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/marionettejs/backbone.metal/issues"
+    "url": "https://github.com/marionettejs/backbone-metal/issues"
   },
-  "homepage": "https://github.com/marionettejs/backbone.metal",
+  "homepage": "https://github.com/marionettejs/backbone-metal",
   "devDependencies": {
     "babel": "^5.0.0",
     "babel-core": "^5.2.17",
