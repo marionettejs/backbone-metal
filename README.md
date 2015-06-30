@@ -14,13 +14,13 @@ Classes are objects that you can instantiate with `new Class()`. You can also cr
 ```js
 import {Class} from 'backbone-metal';
 
-var MyClass = Class.extend({
+const MyClass = Class.extend({
   initialize(options) {
     console.log(`Created! ${options.greeting} ${options.subject}!`);
   }
 });
 
-var myClass = new MyClass({
+let myClass = new MyClass({
   greeting: 'Hello',
   subject: 'World'
 });
@@ -34,13 +34,13 @@ When working with multiple classes, sometimes you want to share functionality be
 ```js
 import {Mixin, Class} from 'backbone-metal';
 
-var MyMixin = new Mixin({
+const MyMixin = new Mixin({
   alert(message) {
     console.log(`Alert! ${message}`);
   }
 });
 
-var MyClass = Class.extend({
+const MyClass = Class.extend({
   initialize() {
     this.alert('You have successfully used a Mixin!');
   }
@@ -48,7 +48,7 @@ var MyClass = Class.extend({
 
 MyClass.mixin(MyMixin);
 
-var myClass = new MyClass();
+let myClass = new MyClass();
 // >> Alert! You have successfully used a Mixin!
 ```
 
@@ -59,20 +59,20 @@ When working with subclasses, sometimes you want to modify one of the parent's m
 ```js
 import {Class} from 'backbone-metal';
 
-var FirstClass = Class.extend({
+const FirstClass = Class.extend({
   initialize() {
     console.log('First Class checking in!');
   }
 });
 
-var SecondClass = FirstClass.extend({
+const SecondClass = FirstClass.extend({
   initialize() {
     this._super();
     console.log('Second Class checking in!');
   }
 });
 
-var secondClass = new SecondClass();
+let secondClass = new SecondClass();
 // >> First Class checking in!
 // >> Second Class checking in!
 ```
