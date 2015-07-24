@@ -493,11 +493,11 @@
   var _deprecate = _deprecate__deprecate;
 
   var backbone_metal = Backbone.Metal = {
-    Class: Class,
-    Mixin: Mixin,
+    Class: _class,
+    Mixin: mixin,
     Error: _error,
-    deprecate: deprecate,
-    Events: Events
+    deprecate: _deprecate,
+    Events: events
   };
 
   return backbone_metal;
