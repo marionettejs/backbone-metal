@@ -9,9 +9,9 @@ import Events from './events';
  * @module Metal
  */
 export default Backbone.Metal = {
-  Class,
-  Mixin,
+  Class: Class,
+  Mixin: Mixin,
   Error: Err,
-  deprecate,
-  Events
+  deprecate: deprecate,
+  Events: Events
 };
