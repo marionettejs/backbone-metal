@@ -8,7 +8,7 @@ import Events from './events';
  * @private
  * @method wrap
  * @param {Function} method - The method to call.
- * @param {Function} superMeqthod - The super method.
+ * @param {Function} superMethod - The super method.
  * @return {Function} - wrapped function.
  */
 function _wrap(method, superMethod) {
