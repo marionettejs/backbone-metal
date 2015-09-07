@@ -62,7 +62,7 @@ function _wrapAll(dest, source, classDisplayName, isOnPrototype) {
       i, name, method, superMethod, hasSuper, methodIsFunction,
       baseDisplayName, methodDisplayName;
 
-  // If a debug mode, add everything we need for
+  // If a debug mode, add everything we need for adding displayName.
   if (Metal.DEBUG) {
     baseDisplayName = classDisplayName + (isOnPrototype ? '.prototype.' : '.');
   }
@@ -95,7 +95,7 @@ function _wrapAll(dest, source, classDisplayName, isOnPrototype) {
     if (hasSuper && methodIsFunction && _.isFunction(superMethod)) {
       dest[name] = _wrap(method, superMethod);
 
-      // If not a production build, wrap
+      // If in debug mode wrap displayName in superWrapper()
       if (Metal.DEBUG) {
         _addSuperWrapperDisplayName(dest[name], methodDisplayName);
       }
