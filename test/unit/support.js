@@ -1,4 +1,4 @@
-import ImportedMetal from '../../src/backbone-metal';
+import ImportedMetal from '../../src/index';
 
 let Metal = ImportedMetal;
 

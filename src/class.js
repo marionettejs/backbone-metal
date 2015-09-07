@@ -1,3 +1,4 @@
+import Metal from './metal';
 import _ from 'underscore';
 import Events from './events';
 
@@ -29,6 +30,23 @@ function _wrap(method, superMethod) {
  */
 const CONTAINS_SUPER = (/xyz/.test(function() { xyz; })) ? /\b_super\b/ : /.*/; // eslint-disable-line
 
+const defineProperty = Object.defineProperty || function() {};
+
+const NON_ENUMERABLE = {
+  value: null,
+  enumerable: false
+};
+
+function _addDisplayName(target, value) {
+  NON_ENUMERABLE.value = value;
+  defineProperty(target, 'displayName', NON_ENUMERABLE);
+  NON_ENUMERABLE.value = null;
+}
+
+function _addSuperWrapperDisplayName(target, value) {
+  _addDisplayName(target, 'superWrapper(' + value + ')');
+}
+
 /**
  * Assigns properties of source object to destination object, wrapping methods
  * that call their super method.
@@ -38,23 +56,49 @@ const CONTAINS_SUPER = (/xyz/.test(function() { xyz; })) ? /\b_super\b/ : /.*/; 
  * @param {Object} dest - The destination object.
  * @param {Object} source - The source object.
  */
-function _wrapAll(dest, source) {
+function _wrapAll(dest, source, classDisplayName, isOnPrototype) {
   let keys = _.keys(source),
       length = keys.length,
-      i, name, method, superMethod, hasSuper;
+      i, name, method, superMethod, hasSuper, methodIsFunction,
+      baseDisplayName, methodDisplayName;
+
+  // If a debug mode, add everything we need for adding displayName.
+  if (Metal.DEBUG) {
+    baseDisplayName = classDisplayName + (isOnPrototype ? '.prototype.' : '.');
+  }
 
   for (i = 0; i < length; i++) {
     name = keys[i];
     method = source[name];
     superMethod = dest[name];
+    methodIsFunction = _.isFunction(method);
 
     // Test if new method calls `_super`
     hasSuper = CONTAINS_SUPER.test(method);
 
+    // If debug mode, ensure displayNames
+    if (Metal.DEBUG) {
+      methodDisplayName = method.displayName;
+
+      // Add a displayName to any functions without one, whenever possible.
+      if (methodIsFunction && classDisplayName && !methodDisplayName) {
+        if (name === 'constructor') {
+          _addDisplayName(method, classDisplayName);
+        } else {
+          _addDisplayName(method, baseDisplayName + (method.name || name));
+        }
+      }
+    }
+
     // Only wrap the new method if the original method was a function and the
     // new method calls `_super`.
-    if (hasSuper && _.isFunction(method) && _.isFunction(superMethod)) {
+    if (hasSuper && methodIsFunction && _.isFunction(superMethod)) {
       dest[name] = _wrap(method, superMethod);
+
+      // If in debug mode wrap displayName in superWrapper()
+      if (Metal.DEBUG) {
+        _addSuperWrapperDisplayName(dest[name], methodDisplayName);
+      }
 
     // Otherwise just add the new method or property to the object.
     } else {
@@ -82,7 +126,7 @@ function _wrapAll(dest, source) {
  * @memberOf Metal
  * @memberOf Backbone
  */
-const Class = function Class() {
+const Class = Metal.Class = function Class() {
   this.cid = _.uniqueId(this.cidPrefix);
   this.initialize(...arguments);
 };
@@ -144,6 +188,12 @@ _.extend(Class, {
   extend(protoProps, staticProps) {
     let Parent = this;
     let Child;
+    let displayName;
+
+    // If debug mode, get displayName from protoProps.
+    if (Metal.DEBUG) {
+      displayName = protoProps && protoProps.displayName || '';
+    }
 
     // The constructor function for the new subclass is either defined by you
     // (the "constructor" property in your `extend` definition), or defaulted
@@ -152,6 +202,11 @@ _.extend(Class, {
       Child = function() { Parent.apply(this, arguments); };
     } else if (CONTAINS_SUPER.test(protoProps.constructor)) {
       Child = _wrap(protoProps.constructor, Parent.prototype.constructor);
+
+      // If debug mode, add a superWrapper to the displayName.
+      if (Metal.DEBUG) {
+        _addSuperWrapperDisplayName(Child, displayName);
+      }
     } else {
       Child = protoProps.constructor;
     }
@@ -159,7 +214,11 @@ _.extend(Class, {
     // Add static properties to the constructor function, if supplied.
     _.extend(Child, Parent);
     if (staticProps) {
-      _wrapAll(Child, staticProps);
+      if (Metal.DEBUG) {
+        _wrapAll(Child, staticProps, displayName, false);
+      } else {
+        _wrapAll(Child, staticProps);
+      }
     }
 
     // Set the prototype chain to inherit from `parent`, without calling
@@ -174,7 +233,11 @@ _.extend(Class, {
     // Add prototype properties (instance properties) to the subclass,
     // if supplied.
     if (protoProps) {
-      _wrapAll(Child.prototype, protoProps);
+      if (Metal.DEBUG) {
+        _wrapAll(Child.prototype, protoProps, displayName, true);
+      } else {
+        _wrapAll(Child.prototype, protoProps);
+      }
     }
 
     // Set a convenience property in case the parent class is needed later.

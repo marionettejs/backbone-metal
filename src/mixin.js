@@ -1,3 +1,4 @@
+import Metal from './metal';
 import _ from 'underscore';
 
 /**
@@ -9,7 +10,7 @@ import _ from 'underscore';
  * @memberOf Backbone
  * @param {Object} protoProps - The properties to be added to the prototype.
  */
-const Mixin = function Mixin(protoProps) {
+const Mixin = Metal.Mixin = function Mixin(protoProps) {
   // Add prototype properties (instance properties) to the class, if supplied.
   _.extend(this, protoProps);
 };

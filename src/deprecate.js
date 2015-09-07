@@ -1,3 +1,4 @@
+import Metal from './metal';
 import _ from 'underscore';
 
 /**
@@ -10,7 +11,7 @@ import _ from 'underscore';
  * @param {String} message.next - The replacement for the deprecated item.
  * @param {Boolean} [test] - An optional boolean. If falsy, the deprecation will be displayed.
  */
-const deprecate = function deprecate(message, test) {
+const deprecate = Metal.deprecate = function deprecate(message, test) {
 
   // Returns if test is provided and is falsy.
   if (test !== undefined && test) {

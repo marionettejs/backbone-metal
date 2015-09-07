@@ -57,7 +57,7 @@
     "underscore": "^1.4.4"
   },
   "babelBoilerplateOptions": {
-    "entryFileName": "backbone-metal",
+    "entryFileName": "index",
     "exportVarName": "Metal",
     "mochaGlobals": [
       "stub",
