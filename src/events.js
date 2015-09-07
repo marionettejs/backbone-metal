@@ -1,3 +1,4 @@
+import Metal from './metal';
 import Backbone from 'backbone';
 import Mixin from './mixin';
 
@@ -10,6 +11,6 @@ import Mixin from './mixin';
  * @extends Metal.Mixin
  * @mixes Backbone.Events
  */
-const Events = new Mixin(Backbone.Events);
+const Events = Metal.Events = new Mixin(Backbone.Events);
 
 export default Events;

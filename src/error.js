@@ -1,3 +1,4 @@
+import Metal from './metal';
 import _ from 'underscore';
 import Class from './class';
 
@@ -23,7 +24,7 @@ const ERROR_PROPS = [
  * @extends Error
  * @uses Metal.Class
  */
-const Err = Class.extend.call(Error, {
+const Err = Metal.Error = Class.extend.call(Error, {
 
   /**
    * @public
