@@ -1,4 +1,4 @@
-import Metal from '../../src/backbone-metal';
+import Metal from '../../src/index';
 
 describe('deprecate', function() {
   beforeEach(function() {

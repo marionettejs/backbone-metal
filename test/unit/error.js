@@ -1,4 +1,4 @@
-import Metal from '../../src/backbone-metal';
+import Metal from '../../src/index';
 
 describe('Error', function() {
   it('should be subclass of native Error', function() {

@@ -1,4 +1,4 @@
-import Metal from '../../src/backbone-metal';
+import Metal from '../../src/index';
 import _ from 'underscore';
 
 describe('Class', function() {
